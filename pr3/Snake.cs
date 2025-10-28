@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using Common;
 using System.IO;
 using System.Threading;
+using Newtonsoft.Json;
 
 namespace pr3
 {
-    internal class Program
+    internal class Snake
     {
         public static List<Leaders> Leaders = new List<Leaders>();
 
@@ -252,7 +253,7 @@ namespace pr3
         public static void SaveLeaders()
         {
             string json = JsonConvert.SerializeObject(Leaders);
-            StreamWriter SW = new StreamWriter("./leaders.txt";
+            StreamWriter SW = new StreamWriter("./leaders.txt");
             SW.WriteLine(json);
             SW.Close();
         }
@@ -264,7 +265,7 @@ namespace pr3
                 string json = SR.ReadLine();
                 SR.Close();
                 if (!string.IsNullOrEmpty(json))
-                    Leaders = JsonConvert.DeserializeObject<Leaders>(json);
+                    Leaders = JsonConvert.DeserializeObject<List<Leaders>>(json);
                 else
                     Leaders = new List<Leaders>();
             }
