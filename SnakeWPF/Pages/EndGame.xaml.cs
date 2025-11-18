@@ -23,12 +23,28 @@ namespace SnakeWPF.Pages
         public EndGame()
         {
             InitializeComponent();
+            // выводим имя игрока
+            name.Content = MainWindow.mainWindow.ViewModelUserSettings.Name;
+            // выводим топ игрока
+            top.Content = MainWindow.mainWindow.ViewModelGames.Top;
+            // выводим очки
+            glasses.Content = $"{MainWindow.mainWindow.ViewModelGames.SnakesPlayers.Points.Count - 3} glasses";
+            // закрываем соединение
+            MainWindow.mainWindow.receivingUdpClient.Close();
+            // останавливаем поток
+            MainWindow.mainWindow.tRec.Abort();
+            // обнуляем данные
+            MainWindow.mainWindow.ViewModelGames = null;
         }
-        // EndGame.xaml.cs
+
+        /// <summary>
+        /// Переход на начальную страницу
+        /// </summary>
         private void OpenHome(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new Home());
+            MainWindow.mainWindow.OpenPage(MainWindow.mainWindow.Home);
         }
+
 
     }
 }
