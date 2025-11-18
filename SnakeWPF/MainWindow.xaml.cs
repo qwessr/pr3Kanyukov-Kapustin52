@@ -161,6 +161,7 @@ namespace SnakeWPF
                             // Открываем окно с окончанием игры
                             OpenPage(new Pages.EndGame());
                         });
+                        break;
                     }
                     else
                     {
