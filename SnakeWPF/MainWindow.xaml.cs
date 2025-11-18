@@ -1,25 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Common;
 
 namespace SnakeWPF
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Главное окно, используется для для общения между страницами
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Главная страница, используется для навигации
+        /// </summary>
+        public static MainWindow mainWindow;
+
+        /// <summary>
+        /// Модель данных для передачи IP-адреса устройства, порта и никнейма
+        /// </summary>
+        public ViewModelUserSettings ViewModelUserSettings = new ViewModelUserSettings();
+
+        /// <summary>
+        /// Модель игрока с координатами змейки и игровых объектов
+        /// </summary>
+        public ViewModelGames ViewModelGames = null;
+
+        /// <summary>
+        /// Удалённый IP-адрес для подключения к серверу
+        /// </summary>
+        public static IPAddress remoteIPAddress = IPAddress.Parse("127.0.0.1");
+
+        /// <summary>
+        /// Удалённый порт для подключения к серверу
+        /// </summary>
+        public static int remotePort = 5001;
+
+        /// <summary>
+        /// Фоновый поток для получения данных о игре
+        /// </summary>
+        public Thread tRec;
+
+        /// <summary>
+        /// UDP клиент для получения данных
+        /// </summary>
+        public UdpClient receivingUdpClient;
+
+        /// <summary>
+        /// Страница HOME
+        /// </summary>
+        public Pages.Home Home = new Pages.Home();
+
+        /// <summary>
+        /// Страница GAME
+        /// </summary>
+        public Pages.Game Game = new Pages.Game();
+
         public MainWindow()
         {
             InitializeComponent();
