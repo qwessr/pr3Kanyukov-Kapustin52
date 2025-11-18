@@ -6,9 +6,12 @@
       xmlns:local="clr-namespace:SnakeWPF.Pages"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
+      
       Title="Game">
 
     <Grid>
+        <Canvas x:Name="canvas"/>
+
         <Grid.Background>
             <ImageBrush ImageSource="/SnakeWPF;component/Image/gamebackg1.jpg" Stretch="UniformToFill"/>
         </Grid.Background>

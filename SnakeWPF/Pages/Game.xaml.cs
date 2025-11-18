@@ -24,7 +24,6 @@ namespace SnakeWPF.Pages
         public int StepCadr = 0;
 
         // Канвас для рисования
-        public Canvas canvas;
 
         public Game()
         {
@@ -47,21 +46,68 @@ namespace SnakeWPF.Pages
                 {
                     // Получаем точку змеи
                     var SnakePoint = MainWindow.mainWindow.ViewModelGames.SnakesPlayers.Points[iPoint];
-                    // Логика смещения/рисования — как на скриншоте (см. ваш пример)
-                    // ...
-                    // Цвет для первой/остальной точки
-                    Brush Color;
-                    if (iPoint == 0)
-                        Color = new SolidColorBrush(Color.FromArgb(255, 0, 127, 14)); // тёмно-зелёный
-                    else
-                        Color = new SolidColorBrush(Color.FromArgb(255, 0, 198, 19)); // светло-зелёный
 
+                    // Смещение точек змеи
+                    if (iPoint != 0)
+                    {
+                        // Получаем следующую точку змеи
+                        var NextSnakePoint = MainWindow.mainWindow.ViewModelGames.SnakesPlayers.Points[iPoint - 1];
+
+                        // Если точка находится по горизонтали
+                        if (SnakePoint.X > NextSnakePoint.X || SnakePoint.X < NextSnakePoint.X)
+                        {
+                            // если точка чётная
+                            if (iPoint % 2 == 0)
+                            {
+                                // если кадр чётный
+                                if (StepCadr == 0)
+                                    SnakePoint.Y -= 1;
+                                else
+                                    SnakePoint.Y += 1;
+                            }
+                            else
+                            {
+                                // если кадр нечётный
+                                if (StepCadr % 2 == 0)
+                                    SnakePoint.Y += 1;
+                                else
+                                    SnakePoint.Y -= 1;
+                            }
+                        }
+                        // Если точка находится по вертикали
+                        else if (SnakePoint.Y > NextSnakePoint.Y || SnakePoint.Y < NextSnakePoint.Y)
+                        {
+                            if (iPoint % 2 == 0)
+                            {
+                                if (StepCadr == 0)
+                                    SnakePoint.X -= 1;
+                                else
+                                    SnakePoint.X += 1;
+                            }
+                            else
+                            {
+                                if (StepCadr % 2 == 0)
+                                    SnakePoint.X += 1;
+                                else
+                                    SnakePoint.X -= 1;
+                            }
+                        }
+                    }
+
+                    // Цвет для точки
+                    Brush color;
+                    if (iPoint == 0)
+                        color = new SolidColorBrush(Color.FromArgb(255, 0, 127, 14)); // тёмно-зелёный
+                    else
+                        color = new SolidColorBrush(Color.FromArgb(255, 0, 198, 19)); // светло-зелёный
+
+                    // Рисуем точку змеи
                     Ellipse ellipse = new Ellipse()
                     {
                         Width = 20,
                         Height = 20,
                         Margin = new Thickness(SnakePoint.X - 10, SnakePoint.Y - 10, 0, 0),
-                        Fill = Color,
+                        Fill = color,
                         Stroke = Brushes.Black
                     };
                     canvas.Children.Add(ellipse);
@@ -69,7 +115,7 @@ namespace SnakeWPF.Pages
 
                 // Отрисовка яблока
                 ImageBrush myBrush = new ImageBrush();
-                myBrush.ImageSource = new BitmapImage(new Uri($"pack://application:,,,/Image/Apple.png"));
+                myBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Image/Apple.png"));
                 Ellipse points = new Ellipse()
                 {
                     Width = 40,
