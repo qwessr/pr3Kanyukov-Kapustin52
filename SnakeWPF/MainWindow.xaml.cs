@@ -65,7 +65,12 @@ namespace SnakeWPF
         public MainWindow()
         {
             InitializeComponent();
+            // Запоминаем MainWindow в переменную для обращения
+            mainWindow = this;
+            // Открываем начальную страницу Home
+            OpenPage(Home);
         }
+
 
         /// <summary>
         /// Начинаем слушать ответы от сервера
