@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
 using Common;
 
 namespace SnakeWPF
@@ -72,5 +74,44 @@ namespace SnakeWPF
             tRec.Start();
         }
 
+        /// <summary>
+        /// Открываем страницу с плавной анимацией перехода
+        /// </summary>
+        public void OpenPage(Page PageOpen)
+        {
+            // Создаём анимацию
+            DoubleAnimation startAnimation = new DoubleAnimation();
+            // Задаём начальное значение анимации
+            startAnimation.From = 1;
+            // Задаём конечное значение анимации
+            startAnimation.To = 0;
+            // Задаём время анимации
+            startAnimation.Duration = TimeSpan.FromSeconds(0.6);
+            // Подписываемся на выполнение анимации
+            startAnimation.Completed += delegate
+            {
+                // Переключаем страницу
+                MainFrame.Navigate(PageOpen);
+
+                // Создаём конечную анимацию
+                DoubleAnimation endAnimation = new DoubleAnimation();
+                // Задаём начальное значение анимации
+                endAnimation.From = 0;
+                // Задаём конечное значение анимации
+                endAnimation.To = 1;
+                // Задаём время анимации
+                endAnimation.Duration = TimeSpan.FromSeconds(0.6);
+                // Воспроизводим анимацию на MainFrame, анимация прозрачности
+                MainFrame.BeginAnimation(OpacityProperty, endAnimation);
+            };
+
+            // Воспроизводим анимацию на MainFrame, анимация прозрачности
+            MainFrame.BeginAnimation(OpacityProperty, startAnimation);
+        }
+
+
+
     }
+
+
 }
