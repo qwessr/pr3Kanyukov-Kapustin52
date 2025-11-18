@@ -10,11 +10,11 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="/SnakeWPF;component/Image/background.jpg"/>
+            <ImageBrush ImageSource="/pr3Kanyukov-Kapustin52;component/Image/backg1.jpg"/>
         </Grid.Background>
         <Grid Width="320" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.Background>
-                <ImageBrush ImageSource="/SnakeWPF;component/Image/background_2.png"/>
+                <ImageBrush ImageSource="/pr3Kanyukov-Kapustin52;component/Image/backg2home.jpg"/>
             </Grid.Background>
         </Grid>
         <Label Content="Your IP address:"

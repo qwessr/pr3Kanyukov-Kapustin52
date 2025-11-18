@@ -24,5 +24,10 @@ namespace SnakeWPF.Pages
         {
             InitializeComponent();
         }
+
+        private void StartGame(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Game());
+        }
     }
 }
