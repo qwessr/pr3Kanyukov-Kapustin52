@@ -127,59 +127,42 @@ namespace SnakeWPF
         /// </summary>
         public void Receiver()
         {
-            // Создаём клиент для прослушивания
             receivingUdpClient = new UdpClient(int.Parse(ViewModelUserSettings.Port));
-            // Конечная сетевая точка
             IPEndPoint RemoteIpEndPoint = null;
-
             try
             {
-                // Слушаем постоянно
                 while (true)
                 {
-                    // Ожидание дейтаграммы
                     byte[] receiveBytes = receivingUdpClient.Receive(ref RemoteIpEndPoint);
-                    // Преобразуем и отображаем данные
                     string returnData = Encoding.UTF8.GetString(receiveBytes);
 
-                    // Если у нас не существует данных от сервера (значит мы только что закончили игру)
                     if (ViewModelGames == null)
                     {
-                        // Говорим что выполняем вне потока
-                        Dispatcher.Invoke(() =>
-                        {
-                            // Открываем окно с игрой
-                            OpenPage(Game);
-                        });
+                        Dispatcher.Invoke(() => OpenPage(Game));
                     }
 
-                    // Конвертируем данные в модель
-                    ViewModelGames = JsonConvert.DeserializeObject<ViewModelGames>(returnData.ToString());
+                    // Десериализуем GameData
+                    GameData gameData = JsonConvert.DeserializeObject<GameData>(returnData.ToString());
+                    ViewModelGames = gameData.PlayerData;
+                    AllViewModelGames = gameData.OtherPlayersData;
 
-                    // Если игрок проиграл
                     if (ViewModelGames.SnakesPlayers.GameOver)
                     {
-                        // Выполняем вне потока
-                        Dispatcher.Invoke(() =>
-                        {
-                            // Открываем окно с окончанием игры
-                            OpenPage(new Pages.EndGame());
-                        });
+                        Dispatcher.Invoke(() => OpenPage(new Pages.EndGame()));
                         break;
                     }
                     else
                     {
-                        // Вызываем создание UI
                         Game.CreateUI();
                     }
                 }
             }
             catch (Exception ex)
             {
-                // если что-то пошло не по плану, выводим ошибку в консоль проекта
-                Debug.WriteLine("Возникло исключение: " + ex.ToString() + "\n " + ex.Message);
+                Debug.WriteLine(ex.ToString() + ex.Message);
             }
         }
+
 
         /// <summary>
         /// Отправляем команды серверу по UDP
