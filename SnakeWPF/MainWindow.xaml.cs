@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Newtonsoft.Json;
 using Common;
+using System.Collections.Generic;
 
 namespace SnakeWPF
 {
@@ -32,6 +33,9 @@ namespace SnakeWPF
         /// Модель игрока с координатами змейки и игровых объектов
         /// </summary>
         public ViewModelGames ViewModelGames = null;
+
+
+        public List<ViewModelGames> AllViewModelGames = null;
 
         /// <summary>
         /// Удалённый IP-адрес для подключения к серверу
